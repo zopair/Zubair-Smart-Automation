@@ -4,8 +4,11 @@ import {mountTaskManager} from "./tools/task-manager.js";
 import {buildTaskManagerHtml} from "./tools/task-manager-export.js";
 import {mountMiniStore} from "./tools/mini-store.js";
 import {buildMiniStoreHtml} from "./tools/mini-store-export.js";
+import {mountShortsPlanner} from "./tools/shorts-planner.js";
+import {buildShortsPlannerHtml} from "./tools/shorts-planner-export.js";
 registerTool({id:"task-manager",label:"إدارة المهام",description:"إدارة مهام محلية على جهازك.",mount:mountTaskManager,exportHtml:buildTaskManagerHtml});
 registerTool({id:"mini-store",label:"متجر مصغر",description:"كتالوج منتجات وسلة وطلبات واتساب مع تخزين محلي.",mount:mountMiniStore,exportHtml:buildMiniStoreHtml});
+registerTool({id:"shorts-content",label:"محتوى الفيديو القصير",description:"تخطيط سيناريو فيديو قصير مع تقسيم زمني ووسوم.",mount:mountShortsPlanner,exportHtml:buildShortsPlannerHtml});
 const input=document.querySelector("#request"),button=document.querySelector("#analyze-button"),count=document.querySelector("#char-count"),feedback=document.querySelector("#feedback"),result=document.querySelector("#result"),title=document.querySelector("#result-title"),description=document.querySelector("#result-description"),workspace=document.querySelector("#tool-workspace");
 input.addEventListener("input",()=>{count.textContent=`${input.value.length} / 1200`;});
 button.addEventListener("click",()=>{
