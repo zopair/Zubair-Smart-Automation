@@ -8,10 +8,12 @@ import {mountShortsPlanner} from "./tools/shorts-planner.js";
 import {buildShortsPlannerHtml} from "./tools/shorts-planner-export.js";
 import {mountSourceCatalog} from "./tools/source-catalog.js";
 import {buildSourceCatalogHtml} from "./tools/source-catalog-export.js";
+import {mountAgentWorkflow} from "./tools/agent-workflow.js";
 registerTool({id:"task-manager",label:"إدارة المهام",description:"إدارة مهام محلية على جهازك.",mount:mountTaskManager,exportHtml:buildTaskManagerHtml});
 registerTool({id:"mini-store",label:"متجر مصغر",description:"كتالوج منتجات وسلة وطلبات واتساب مع تخزين محلي.",mount:mountMiniStore,exportHtml:buildMiniStoreHtml});
 registerTool({id:"shorts-content",label:"محتوى الفيديو القصير",description:"تخطيط سيناريو فيديو قصير مع تقسيم زمني ووسوم.",mount:mountShortsPlanner,exportHtml:buildShortsPlannerHtml});
 registerTool({id:"source-catalog",label:"كتالوج الأدوات والمصادر",description:"البحث في مصادر تقنية مدققة مبدئياً مع بيان التراخيص والمخاطر.",mount:mountSourceCatalog,exportHtml:buildSourceCatalogHtml});
+registerTool({id:"agent-workflow",label:"مركز سير عمل الوكلاء",description:"تخطيط خطوات محلية مسموح بها تتطلب موافقة قبل التنفيذ مع سجل تدقيق.",mount:mountAgentWorkflow});
 const input=document.querySelector("#request"),button=document.querySelector("#analyze-button"),count=document.querySelector("#char-count"),feedback=document.querySelector("#feedback"),result=document.querySelector("#result"),title=document.querySelector("#result-title"),description=document.querySelector("#result-description"),workspace=document.querySelector("#tool-workspace");
 input.addEventListener("input",()=>{count.textContent=`${input.value.length} / 1200`;});
 button.addEventListener("click",()=>{
