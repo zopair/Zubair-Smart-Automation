@@ -6,3 +6,4 @@ test("detects task management requests",()=>{assert.equal(analyzeRequest("أري
 test("detects mini store requests",()=>{assert.equal(analyzeRequest("أريد إنشاء متجر لبيع المنتجات").intent,"mini-store");});
 test("detects short-form video requests",()=>{assert.equal(analyzeRequest("أريد أفكار ريلز وفيديوهات").intent,"shorts-content");});
 test("does not guess when no template matches",()=>{assert.equal(analyzeRequest("أحتاج نظاماً لإدارة أسطول المركبات").intent,"unknown");});
+test("prioritizes explicit agent workflow intent over incidental task keywords",()=>{assert.equal(analyzeRequest("أريد وكيل ينظم النص ويضيف مهمة بعد الموافقة").intent,"agent-workflow");});
