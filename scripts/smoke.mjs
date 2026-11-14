@@ -16,7 +16,7 @@ try{
     try{response=await fetch(base);break;}catch{await delay(100);}
   }
   await stat("dist/.nojekyll");
-  const clientBundle=await readFile("dist/src/main.js","utf8");assert.doesNotMatch(clientBundle,/AI_API_KEY|Bearer\\s/);
+  const clientBundle=await readFile("dist/src/main.js","utf8"),shortsBundle=await readFile("dist/src/tools/shorts-planner.js","utf8");assert.doesNotMatch(clientBundle,/AI_API_KEY|Bearer\s/);assert.doesNotMatch(shortsBundle,/AI_API_KEY|Bearer\s/);
   assert.ok(response,"Preview server did not become ready.");
   assert.equal(response.status,200);
   assert.match(response.headers.get("content-type")??"",/text\/html/);
