@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
+import {stat} from "node:fs/promises";
 import {setTimeout as delay} from "node:timers/promises";
 
 const port=Number(process.env.SMOKE_PORT??4174);
@@ -14,7 +15,7 @@ try{
     if(child.exitCode!==null)throw new Error(`Preview server exited early: ${diagnostics}`);
     try{response=await fetch(base);break;}catch{await delay(100);}
   }
-  assert.ok(response,"Preview server did not become ready.");
+  await stat("dist/.nojekyll");\n  assert.ok(response,"Preview server did not become ready.");
   assert.equal(response.status,200);
   assert.match(response.headers.get("content-type")??"",/text\/html/);
   const html=await response.text();
