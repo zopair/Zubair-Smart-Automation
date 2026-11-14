@@ -53,3 +53,21 @@ test("recovers from malformed persisted data",()=>{
   const store=createStorefrontStore({storage});
   assert.deepEqual(store.listProducts(),[]);
 });
+
+test("allows zero inventory but never negative inventory",()=>{
+  const store=createStorefrontStore({storage:makeStorage()});
+  assert.equal(store.addProduct({...product,id:"empty",stock:0}).stock,0);
+  assert.throws(()=>store.addProduct({...product,id:"negative",stock:-1}),/stock/i);
+});
+test("prevents lowering stock below reserved cart quantity",()=>{
+  const store=createStorefrontStore({storage:makeStorage()});
+  store.addProduct(product);store.addToCart("p-1",2);
+  assert.throws(()=>store.updateProduct("p-1",{stock:1}),/cart/i);
+  assert.equal(store.updateProduct("p-1",{stock:3}).stock,3);
+});
+test("removing a product also removes it from the cart",()=>{
+  const store=createStorefrontStore({storage:makeStorage()});
+  store.addProduct(product);store.addToCart("p-1");
+  assert.equal(store.removeProduct("p-1"),true);
+  assert.deepEqual(store.getCart(),{items:[],total:0});
+});
