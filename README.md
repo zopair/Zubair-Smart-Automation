@@ -43,7 +43,13 @@ npm run preview
 - `tests/`: اختبارات.
 - `scripts/`: بناء ومعاينة ثابتة.
 
-## إعداد موصل الذكاء الاصطناعي\nيمكن تشغيل خادم المعاينة مع متغيرات البيئة AI_API_KEY وAI_MODEL. يمكن تحديد AI_API_URL، واختيار AI_API_STYLE=responses عند استخدام Responses API. لا تضع أي مفتاح في ملفات الواجهة أو المستودع. راجع [دليل موصل AI](docs/ai-proxy.md).\n\n## النشر\nملف النشر اليدوي موجود في [دليل GitHub Pages](docs/deployment.md). يجب اختيار GitHub Actions كمصدر Pages من إعدادات المستودع قبل تشغيل workflow.\n\n## تقييم المصادر المفتوحة
+## إعداد موصل الذكاء الاصطناعي
+يمكن تشغيل خادم المعاينة مع متغيرات البيئة AI_API_KEY وAI_MODEL. يمكن تحديد AI_API_URL، واختيار AI_API_STYLE=responses عند استخدام Responses API. لا تضع أي مفتاح في ملفات الواجهة أو المستودع. راجع [دليل موصل AI](docs/ai-proxy.md).
+
+## النشر
+ملف النشر اليدوي موجود في [دليل GitHub Pages](docs/deployment.md). يجب اختيار GitHub Actions كمصدر Pages من إعدادات المستودع قبل تشغيل workflow.
+
+## تقييم المصادر المفتوحة
 راجع [سياسة اختيار المصادر](docs/source-selection.md) و[تدقيق المستودعات الأولي](docs/source-audit.md). لا تُضاف مكتبة خارجية قبل فحص الترخيص والحجم والصيانة وسطح الهجوم.
 
 ## مبادئ الأمان
