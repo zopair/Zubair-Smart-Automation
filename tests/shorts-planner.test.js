@@ -1,0 +1,7 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {createShortPlan,buildShortPlanText} from "../src/core/shorts-planner.js";
+test("creates a structured Arabic short-form storyboard",()=>{const plan=createShortPlan({topic:"إطلاق متجر إلكتروني",audience:"أصحاب المشروعات",goal:"التوعية",platform:"instagram",duration:30,tone:"professional",cta:"تابع الحساب"});assert.equal(plan.platform,"instagram");assert.equal(plan.segments.length,3);assert.equal(plan.segments.reduce((sum,item)=>sum+item.seconds,0),30);assert.match(plan.script,/إطلاق متجر إلكتروني/);assert.match(plan.script,/تابع الحساب/);});
+test("rejects missing topic, unsupported platforms and invalid duration",()=>{assert.throws(()=>createShortPlan({topic:"",audience:"عام"}),/topic/i);assert.throws(()=>createShortPlan({topic:"موضوع",audience:"عام",platform:"unknown"}),/platform/i);assert.throws(()=>createShortPlan({topic:"موضوع",audience:"عام",duration:500}),/duration/i);});
+test("normalizes and deduplicates user hashtags without inventing claims",()=>{const plan=createShortPlan({topic:"خدمة جديدة",audience:"العملاء",keywords:["#تجربة","تجربة","جودة عالية"]});assert.deepEqual(plan.hashtags,["#تجربة","#جودة_عالية"]);assert.doesNotMatch(plan.script,/أفضل خدمة في العالم/);});
+test("exports a copyable plain-text production brief",()=>{const plan=createShortPlan({topic:"إدارة الوقت",audience:"رواد الأعمال"});const text=buildShortPlanText(plan);assert.match(text,/الافتتاحية/);assert.match(text,/الوسوم/);});
