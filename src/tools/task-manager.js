@@ -1,27 +1,32 @@
-const STORAGE_KEY="zubair-smart-automation:tasks:v1";
-function readTasks() {
-  try { const value=JSON.parse(localStorage.getItem(STORAGE_KEY)??"[]"); return Array.isArray(value)?value:[]; }
-  catch { return []; }
-}
-function saveTasks(tasks) { localStorage.setItem(STORAGE_KEY,JSON.stringify(tasks)); }
+import {createTaskStore} from "../core/task-store.js";
+
 export function mountTaskManager(root) {
-  const form=document.createElement("form"); form.className="task-form";
-  form.innerHTML=`<label for="task-title">مهمة جديدة</label><div class="task-entry"><input id="task-title" name="title" maxlength="160" required placeholder="اكتب اسم المهمة..."><button class="primary-button" type="submit">إضافة</button></div><ul class="task-list" aria-label="قائمة المهام"></ul><p class="storage-note">تُحفظ المهام على هذا الجهاز فقط باستخدام Local Storage.</p>`;
-  const list=form.querySelector(".task-list");
+  const store=createTaskStore();
+  const section=document.createElement("section");
+  section.className="task-form";
+  section.innerHTML=`<form class="task-entry"><label class="sr-only" for="task-title">مهمة جديدة</label><input id="task-title" name="title" maxlength="160" required placeholder="اكتب اسم المهمة..."><button class="primary-button" type="submit">إضافة</button></form><div class="task-toolbar"><span class="task-count" aria-live="polite"></span><button class="export-tasks" type="button">تصدير JSON</button></div><ul class="task-list" aria-label="قائمة المهام"></ul><p class="storage-note">تُحفظ المهام على هذا الجهاز فقط. لا يتم إرسالها إلى خادم.</p>`;
+  const form=section.querySelector("form"),list=section.querySelector(".task-list"),count=section.querySelector(".task-count");
   function render() {
-    list.replaceChildren();
-    for(const task of readTasks()) {
-      const item=document.createElement("li"); item.className="task-item";
-      const label=document.createElement("span"); label.textContent=task.title;
-      const remove=document.createElement("button"); remove.type="button"; remove.className="remove-task"; remove.textContent="حذف"; remove.setAttribute("aria-label",`حذف المهمة ${task.title}`);
-      remove.addEventListener("click",()=>{saveTasks(readTasks().filter(entry=>entry.id!==task.id));render();});
+    const tasks=store.list();list.replaceChildren();
+    count.textContent=`إجمالي المهام: ${tasks.length} · المكتملة: ${tasks.filter(task=>task.completed).length}`;
+    for(const task of tasks) {
+      const item=document.createElement("li");item.className="task-item";
+      const label=document.createElement("label");label.className="task-label";
+      const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=task.completed;checkbox.setAttribute("aria-label",`تحديد ${task.title} كمكتملة`);
+      checkbox.addEventListener("change",()=>{store.setCompleted(task.id,checkbox.checked);render();});
+      const text=document.createElement("span");text.textContent=task.title;if(task.completed)text.className="is-complete";
+      label.append(checkbox,text);
+      const remove=document.createElement("button");remove.type="button";remove.className="remove-task";remove.textContent="حذف";remove.setAttribute("aria-label",`حذف المهمة ${task.title}`);
+      remove.addEventListener("click",()=>{store.remove(task.id);render();});
       item.append(label,remove);list.append(item);
     }
-    if(!list.childElementCount){const empty=document.createElement("li");empty.className="empty-state";empty.textContent="لا توجد مهام بعد.";list.append(empty);}
+    if(!tasks.length){const empty=document.createElement("li");empty.className="empty-state";empty.textContent="لا توجد مهام بعد.";list.append(empty);}
   }
-  form.addEventListener("submit",event=>{
-    event.preventDefault();const input=form.elements.title;const title=input.value.trim();if(!title)return;
-    const tasks=readTasks();tasks.unshift({id:crypto.randomUUID(),title,createdAt:new Date().toISOString()});saveTasks(tasks);input.value="";render();
+  form.addEventListener("submit",event=>{event.preventDefault();const input=form.elements.title;try{store.create({title:input.value});input.value="";render();input.focus();}catch(error){input.setCustomValidity(error.message);input.reportValidity();}});
+  form.elements.title.addEventListener("input",event=>event.currentTarget.setCustomValidity(""));
+  section.querySelector(".export-tasks").addEventListener("click",()=>{
+    const blob=new Blob([store.exportJson()],{type:"application/json"});
+    const url=URL.createObjectURL(blob);const anchor=document.createElement("a");anchor.href=url;anchor.download="zubair-tasks.json";anchor.click();URL.revokeObjectURL(url);
   });
-  root.replaceChildren(form);render();
+  root.replaceChildren(section);render();
 }
