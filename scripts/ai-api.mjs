@@ -5,6 +5,8 @@ const DEFAULT_RESPONSES_URL="https://api.openai.com/v1/responses";
 function json(res,status,body){res.writeHead(status,{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"});res.end(JSON.stringify(body));}
 function clean(value,max,label,required=false){const text=String(value??"").trim();if(required&&!text)throw new TypeError(`${label} is required.`);if(text.length>max)throw new RangeError(`${label} is too long.`);return text;}
 function extractText(body){
+ if(typeof body?.output_text==="string")return body.output_text.trim();
+ if(Array.isArray(body?.output)){const responseText=body.output.flatMap(item=>Array.isArray(item.content)?item.content:[]).map(item=>item?.text??"").join("\n").trim();if(responseText)return responseText;}
  const content=body?.choices?.[0]?.message?.content;
  if(typeof content==="string")return content.trim();
  if(Array.isArray(content))return content.map(item=>item?.text??"").join("\n").trim();
@@ -54,9 +56,12 @@ export function createAiApiHandler({env=process.env,fetchImpl=globalThis.fetch,n
   try{
    if(!String(req.headers["content-type"]??"").includes("application/json"))throw Object.assign(new Error("Content-Type must be application/json."),{status:415});
    const body=await readBody(req,maxBodyBytes),payload=validatePayload(body);
-   const apiUrl=new URL(env.AI_API_URL||DEFAULT_API_URL);
+   const style=env.AI_API_STYLE||"chat-completions";
+   if(!["chat-completions","responses"].includes(style))throw Object.assign(new Error("Unsupported AI_API_STYLE."),{status:500});
+   const apiUrl=new URL(env.AI_API_URL||(style==="responses"?DEFAULT_RESPONSES_URL:DEFAULT_API_URL));
    if(apiUrl.protocol!=="https:"&&!(apiUrl.protocol==="http:"&&["localhost","127.0.0.1","[::1]"].includes(apiUrl.hostname)))throw Object.assign(new Error("AI_API_URL must use HTTPS except for loopback development."),{status:500});
-   const response=await fetchImpl(apiUrl,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${env.AI_API_KEY}`},body:JSON.stringify({model:env.AI_MODEL,messages:[{role:"system",content:"اكتب محتوى دقيقاً ولا تختلق حقائق."},{role:"user",content:createPrompt(payload)}],temperature:0.7,max_tokens:1400}),signal:AbortSignal.timeout(45000)});
+   const requestBody=style==="responses"?{model:env.AI_MODEL,store:false,max_output_tokens:1400,input:[{role:"developer",content:[{type:"input_text",text:"اكتب محتوى دقيقاً ولا تختلق حقائق."}]},{role:"user",content:[{type:"input_text",text:createPrompt(payload)}]}]}:{model:env.AI_MODEL,messages:[{role:"system",content:"اكتب محتوى دقيقاً ولا تختلق حقائق."},{role:"user",content:createPrompt(payload)}],temperature:0.7,max_tokens:1400};
+   const response=await fetchImpl(apiUrl,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${env.AI_API_KEY}`},body:JSON.stringify(requestBody),signal:AbortSignal.timeout(45000)});
    if(!response.ok){json(res,502,{error:"The configured AI provider returned an error."});return true;}
    const result=await response.json(),text=extractText(result);
    if(!text||text.length>12000){json(res,502,{error:"The AI provider returned an empty or oversized response."});return true;}
