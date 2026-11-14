@@ -20,7 +20,7 @@ export function mountSourceCatalog(root){
    const scope=document.createElement("p");scope.textContent=entry.licenseScope;
    const fit=document.createElement("p");fit.textContent=`ملاءمة المنصة: ${entry.clientFit}`;
    const notes=document.createElement("ul");for(const note of entry.notes){const li=document.createElement("li");li.textContent=note;notes.append(li);}
-   const meta=document.createElement("small");meta.textContent=`مراجعة ${entry.reviewedAt} · ${entry.auditStatus}`;
+   const meta=document.createElement("small");meta.textContent=`مراجعة ${entry.reviewedAt} · ${entry.auditStatus} · LICENSE ${entry.licenseSha.slice(0,12)}`;
    const link=document.createElement("a");link.href=entry.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent="فتح المستودع الرسمي";
    const licenseLink=document.createElement("a");licenseLink.href=entry.licenseUrl;licenseLink.target="_blank";licenseLink.rel="noopener noreferrer";licenseLink.textContent="فتح ملف الترخيص";
    card.append(title,repo,summary,license,scope,fit,notes,meta,link,licenseLink);list.append(card);
