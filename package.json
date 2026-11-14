@@ -1,0 +1,14 @@
+{
+  "name": "zubair-smart-automation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Arabic client-side automation tool generator",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/main.js && node --check src/core/request-analyzer.js && node --check src/core/tool-registry.js && node --check src/tools/task-manager.js && node --check scripts/build.mjs && node --check scripts/preview.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs"
+  }
+}
