@@ -1,7 +1,7 @@
 import {createAgentWorkflowEngine} from "../core/agent-workflow.js";
 import {createTaskStore} from "../core/task-store.js";
 export function mountAgentWorkflow(root){
- const engine=createAgentWorkflowEngine({tools:[
+ let engine;try{engine=createAgentWorkflowEngine({tools:[
   {id:"text.normalize",risk:"read",execute:({text=""}={})=>({normalizedText:String(text).replace(/\r\n?/g,"\n").replace(/[\t ]+/g," ").replace(/\n{3,}/g,"\n\n").trim()})},
   {id:"tasks.create",risk:"write",execute:({title}={})=>createTaskStore().create({title})}
  ]});
