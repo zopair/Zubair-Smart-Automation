@@ -20,7 +20,8 @@ try{
   const html=await response.text();
   assert.match(html,/Zubair Smart Automation/);
   for(const path of ["/src/main.js","/src/styles.css"]){const asset=await fetch(base+path);assert.equal(asset.status,200,`Expected ${path} to load`);assert.ok((await asset.text()).length>0);}
-  const health=await fetch(base+"/api/health");assert.equal(health.status,200);assert.equal((await health.json()).available,false);\n  const head=await fetch(base,{method:"HEAD"});assert.equal(head.status,200);assert.equal(await head.text(),"");
+  const health=await fetch(base+"/api/health");assert.equal(health.status,200);assert.equal((await health.json()).available,false);
+  const head=await fetch(base,{method:"HEAD"});assert.equal(head.status,200);assert.equal(await head.text(),"");
   const post=await fetch(base,{method:"POST"});assert.equal(post.status,405);
   const missing=await fetch(base+"/not-found.js");assert.equal(missing.status,404);
   console.log("Preview smoke passed: HTML, JS, CSS, HEAD, method guard and 404.");
