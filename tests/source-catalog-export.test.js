@@ -13,7 +13,7 @@ test("executes catalog rendering and filters against a minimal DOM",()=>{
  const listeners=new Map();
  class Element{constructor(){this.children=[];this.value="all";this.textContent="";}append(...items){this.children.push(...items);}replaceChildren(...items){this.children=[...items];}addEventListener(type,handler){listeners.set(this,type+":"+handler);this.handlers??={};this.handlers[type]=handler;}}
  const elements=new Map([["#query",new Element()],["#category",new Element()],["#risk",new Element()],["#list",new Element()],["#count",new Element()]]);
- const document={querySelector:selector=>elements.get(selector),createElement:()=>new Element()};
+ elements.get("#query").value="";\n const document={querySelector:selector=>elements.get(selector),createElement:()=>new Element()};
  vm.runInNewContext(source,{document});
  assert.equal(elements.get("#list").children.length,5);
  elements.get("#query").value="WebGPU";elements.get("#query").handlers.input();
