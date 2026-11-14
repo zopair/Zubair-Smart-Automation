@@ -20,6 +20,8 @@
     <textarea id="request" rows="4" maxlength="1200" placeholder="مثال: أريد أداة لتنظيم مهام فريقي وتحديد المسؤول والموعد النهائي وحالة كل مهمة..."></textarea>
     <div class="form-footer"><span id="char-count">0 / 1200</span><button id="analyze-button" class="primary-button" type="button">حلّل وأنشئ نقطة البداية <span aria-hidden="true">←</span></button></div>
     <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    <button id="ai-plan-button" class="primary-button ai-plan-button" type="button" hidden>تحليل متقدم وصياغة مواصفات الأداة</button>
+    <pre id="ai-plan-output" class="ai-plan-output" hidden aria-live="polite"></pre>
   </section>
   <section id="result" class="panel result-panel" hidden aria-live="polite">
     <div class="section-heading"><div><p class="eyebrow">نتيجة التحليل</p><h2 id="result-title">قالب مقترح</h2></div><span class="step">02 / اختيار القالب</span></div>
