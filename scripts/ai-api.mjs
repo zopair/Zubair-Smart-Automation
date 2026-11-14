@@ -1,6 +1,6 @@
 const ALLOWED_PLATFORMS=new Set(["instagram","tiktok","youtube-shorts","facebook"]);
 const ALLOWED_TONES=new Set(["professional","friendly","energetic","educational"]);
-const DEFAULT_API_URL="https://api.openai.com/v1/chat/completions";
+const DEFAULT_API_URL="https://api.openai.com/v1/chat/completions";\nconst DEFAULT_RESPONSES_URL="https://api.openai.com/v1/responses";
 function json(res,status,body){res.writeHead(status,{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"});res.end(JSON.stringify(body));}
 function clean(value,max,label,required=false){const text=String(value??"").trim();if(required&&!text)throw new TypeError(`${label} is required.`);if(text.length>max)throw new RangeError(`${label} is too long.`);return text;}
 function extractText(body){
