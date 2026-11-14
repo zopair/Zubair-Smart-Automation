@@ -1,6 +1,7 @@
 const DEFAULT_KEY="zubair-smart-automation:tasks:v1";
+function getBrowserStorage(){try{return globalThis.localStorage;}catch{return null;}}
 
-export function createTaskStore({storage=globalThis.localStorage,key=DEFAULT_KEY,idFactory=()=>globalThis.crypto.randomUUID(),now=()=>new Date().toISOString()}={}) {
+export function createTaskStore({storage=getBrowserStorage(),key=DEFAULT_KEY,idFactory=()=>globalThis.crypto.randomUUID(),now=()=>new Date().toISOString()}={}) {
   if(!storage || typeof storage.getItem!=="function" || typeof storage.setItem!=="function") throw new TypeError("A Storage-compatible object is required.");
   function read() {
     try {
