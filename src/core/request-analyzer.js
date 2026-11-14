@@ -8,7 +8,7 @@ const INTENTS = [
 export function analyzeRequest(input) {
   const normalized = String(input ?? "").trim().toLocaleLowerCase("ar");
   if (!normalized) return { intent:"unknown", confidence:0, label:"وصف مطلوب", description:"اكتب وصفاً مختصراً للأداة التي تريدها." };
-  const ranked = INTENTS.map(item => ({...item,score:(item.priority??0)+item.keywords.reduce((n,word)=>n+(normalized.includes(word)?1:0),0)})).sort((a,b)=>b.score-a.score);
+  const ranked = INTENTS.map(item => { const matches=item.keywords.reduce((n,word)=>n+(normalized.includes(word)?1:0),0); return {...item,score:matches+(matches>0?(item.priority??0):0)}; }).sort((a,b)=>b.score-a.score);
   const best = ranked[0];
   if (!best || best.score===0) return {intent:"unknown",confidence:0,label:"نحتاج توضيحاً",description:"لم يتحدد قالب مناسب بعد. وضّح النتيجة التي تريد أن تحققها الأداة."};
   const total=ranked.reduce((sum,item)=>sum+item.score,0);
