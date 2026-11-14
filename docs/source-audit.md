@@ -12,6 +12,18 @@
 | [Comfy-Org/ComfyUI](https://github.com/Comfy-Org/ComfyUI) | GPL-3.0 | خدمة مستقلة محتملة لتوليد الوسائط؛ لا تدمج أو توزع أجزاء منها قبل مراجعة التزامات GPL وتراخيص النماذج والإضافات. |
 | [gitroomhq/postiz-app](https://github.com/gitroomhq/postiz-app) | AGPL-3.0 | مرجع لجدولة المحتوى؛ لا يُدمج في منتج مغلق أو يقدم كخدمة شبكية قبل مراجعة أثر AGPL. |
 
+
+## بصمات ملفات الترخيص التي تمت مراجعتها
+
+البصمات التالية تثبت محتوى ملفات الترخيص وقت الفحص؛ ويحتفظ الكتالوج ببصمة ملف LICENSE الجذري لكل مصدر:
+
+- Langflow LICENSE: ee3d6be71bdd1b5e4cc5b85da4a4aabc7bfe3347
+- Activepieces LICENSE: 73e0a2f7acf13c780655de40183b06a0a93e091b
+- Activepieces Enterprise LICENSE: 1c68c6b3bbc00e1a41a78b488da61a0c983faab4
+- WebLLM LICENSE: bb3a405731b6872d7cbeafde7fa55f27e38074d7
+- ComfyUI LICENSE: f288702d2fa16d3cdf0035b15a9fcbc552cd88e7
+- Postiz LICENSE: 24fd22792bf887200be9e1388c7b9d4782c6b3b2
+
 ## قواعد القبول قبل إضافة اعتماد
 
 1. تثبيت المستودع canonical والتحقق من المالك والاسم والفرع والإصدار.
