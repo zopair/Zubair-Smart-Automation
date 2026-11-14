@@ -15,7 +15,8 @@ try{
     if(child.exitCode!==null)throw new Error(`Preview server exited early: ${diagnostics}`);
     try{response=await fetch(base);break;}catch{await delay(100);}
   }
-  await stat("dist/.nojekyll");\n  assert.ok(response,"Preview server did not become ready.");
+  await stat("dist/.nojekyll");
+  assert.ok(response,"Preview server did not become ready.");
   assert.equal(response.status,200);
   assert.match(response.headers.get("content-type")??"",/text\/html/);
   const html=await response.text();
