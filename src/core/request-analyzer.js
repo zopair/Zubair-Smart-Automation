@@ -1,6 +1,6 @@
 const INTENTS = [
   { id:"task-manager", label:"إدارة المهام", description:"قالب محلي لإضافة المهام ومتابعتها وتخزينها على هذا الجهاز.", keywords:["مهمة","مهام","فريق","مشروع","متابعة","task","project","team"] },
-  { id:"mini-store", label:"متجر مصغر", description:"قالب متجر لعرض المنتجات وتجهيز الطلبات.", keywords:["متجر","منتج","منتجات","سلة","بيع","store","product","cart"] },
+  { id:"mini-store", label:"متجر مصغر", description:"متجر محلي لإدارة المنتجات والمخزون والسلة وتجهيز طلبات واتساب.", keywords:["متجر","متجر مصغر","منتج","منتجات","سلة","بيع","شراء","كتالوج","store","product","cart","shop"] },
   { id:"shorts-content", label:"محتوى الشورتز", description:"قالب لتخطيط أفكار الفيديوهات القصيرة والنصوص.", keywords:["فيديو","شورت","ريلز","محتوى","هاشتاج","shorts","reels","video"] }
 ];
 export function analyzeRequest(input) {
