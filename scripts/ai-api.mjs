@@ -18,8 +18,11 @@ async function readBody(req,maxBytes){
  try{return JSON.parse(Buffer.concat(chunks).toString("utf8"));}catch{throw Object.assign(new Error("Request body must be valid JSON."),{status:400});}
 }
 function validatePayload(body){
+ const input=body?.payload??{};
+ if(body?.task==="tool-spec"){
+  return {description:clean(input.description,1200,"Description",true)};
+ }
  if(body?.task!=="shorts-script")throw Object.assign(new Error("Unsupported generation task."),{status:400});
- const input=body.payload??{};
  const topic=clean(input.topic,120,"Topic",true),audience=clean(input.audience,120,"Audience",true),cta=clean(input.cta,160,"CTA");
  const platform=String(input.platform??"");if(!ALLOWED_PLATFORMS.has(platform))throw Object.assign(new Error("Unsupported platform."),{status:400});
  const duration=Number(input.duration);if(!Number.isInteger(duration)||duration<15||duration>180)throw Object.assign(new Error("Duration must be between 15 and 180 seconds."),{status:400});
@@ -27,7 +30,14 @@ function validatePayload(body){
  const keywords=Array.isArray(input.keywords)?input.keywords.slice(0,8).map(value=>clean(value,40,"Keyword")):[];
  return {topic,audience,cta,platform,duration,tone,keywords};
 }
-function createPrompt(payload){
+function createPrompt(payload,task){
+ if(task==="tool-spec")return [
+  "أنت مهندس برمجيات ومنتجات. حوّل وصف المستخدم إلى مواصفات أداة قابلة للتنفيذ لاحقاً.",
+  "أخرج مواصفات عربية منظمة تتضمن: الهدف، المستخدمين، المدخلات، المخرجات، حالات الاستخدام، قواعد التحقق، نموذج البيانات، حالات الخطأ، متطلبات الخصوصية، ومعايير القبول.",
+  "لا تكتب شيفرة أو HTML أو أوامر shell أو تعليمات تنفيذية. لا تخترع تكاملات أو حزم أو APIs. ضع أي نقطة غير مؤكدة ضمن أسئلة مفتوحة.",
+  "ميّز بين المتطلبات التي ذكرها المستخدم والاقتراحات التي أضفتها.",
+  JSON.stringify(payload)
+ ].join("\n\n");
  return [
   "أنت مساعد تحرير محتوى فيديو قصير. اكتب مسودة عربية واضحة قابلة للمراجعة.",
   "لا تخترع إحصاءات أو حقائق أو شهادات أو نتائج أو وعوداً. إذا احتاج الموضوع معلومة غير مقدمة، ضع [تحقق من المعلومة] بدلاً من اختلاقها.",
@@ -60,7 +70,7 @@ export function createAiApiHandler({env=process.env,fetchImpl=globalThis.fetch,n
    if(!["chat-completions","responses"].includes(style))throw Object.assign(new Error("Unsupported AI_API_STYLE."),{status:500});
    const apiUrl=new URL(env.AI_API_URL||(style==="responses"?DEFAULT_RESPONSES_URL:DEFAULT_API_URL));
    if(apiUrl.protocol!=="https:"&&!(apiUrl.protocol==="http:"&&["localhost","127.0.0.1","[::1]"].includes(apiUrl.hostname)))throw Object.assign(new Error("AI_API_URL must use HTTPS except for loopback development."),{status:500});
-   const requestBody=style==="responses"?{model:env.AI_MODEL,store:false,max_output_tokens:1400,input:[{role:"developer",content:[{type:"input_text",text:"اكتب محتوى دقيقاً ولا تختلق حقائق."}]},{role:"user",content:[{type:"input_text",text:createPrompt(payload)}]}]}:{model:env.AI_MODEL,messages:[{role:"system",content:"اكتب محتوى دقيقاً ولا تختلق حقائق."},{role:"user",content:createPrompt(payload)}],temperature:0.7,max_tokens:1400};
+   const requestBody=style==="responses"?{model:env.AI_MODEL,store:false,max_output_tokens:1400,input:[{role:"developer",content:[{type:"input_text",text:body.task==="tool-spec"?"أنت مهندس برمجيات. لا تكتب شيفرة ولا تختلق خدمات.":"اكتب محتوى دقيقاً ولا تختلق حقائق."}]},{role:"user",content:[{type:"input_text",text:createPrompt(payload,body.task)}]}]}:{model:env.AI_MODEL,messages:[{role:"system",content:body.task==="tool-spec"?"أنت مهندس برمجيات. لا تكتب شيفرة ولا تختلق خدمات.":"اكتب محتوى دقيقاً ولا تختلق حقائق."},{role:"user",content:createPrompt(payload,body.task)}],temperature:0.7,max_tokens:1400};
    const response=await fetchImpl(apiUrl,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${env.AI_API_KEY}`},body:JSON.stringify(requestBody),signal:AbortSignal.timeout(45000)});
    if(!response.ok){json(res,502,{error:"The configured AI provider returned an error."});return true;}
    const result=await response.json(),text=extractText(result);
