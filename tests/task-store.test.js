@@ -16,7 +16,7 @@ test("toggles task completion and preserves other tasks",()=>{
   const store=createTaskStore({storage:makeStorage(),idFactory:(()=>{let i=0;return()=>`task-${++i}`;})()});
   const first=store.create({title:"First"});store.create({title:"Second"});
   assert.equal(store.setCompleted(first.id,true).completed,true);
-  assert.equal(store.list()[1].completed,false);
+  assert.equal(store.list().find(task=>task.title==="Second").completed,false);
 });
 test("deletes only the requested task",()=>{
   const store=createTaskStore({storage:makeStorage(),idFactory:(()=>{let i=0;return()=>`task-${++i}`;})()});
