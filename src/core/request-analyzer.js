@@ -1,7 +1,7 @@
 const INTENTS = [
   { id:"task-manager", label:"إدارة المهام", description:"قالب محلي لإضافة المهام ومتابعتها وتخزينها على هذا الجهاز.", keywords:["مهمة","مهام","فريق","مشروع","متابعة","task","project","team"] },
   { id:"mini-store", label:"متجر مصغر", description:"متجر محلي لإدارة المنتجات والمخزون والسلة وتجهيز طلبات واتساب.", keywords:["متجر","متجر مصغر","منتج","منتجات","سلة","بيع","شراء","كتالوج","store","product","cart","shop"] },
-  { id:"shorts-content", label:"محتوى الشورتز", description:"قالب لتخطيط أفكار الفيديوهات القصيرة والنصوص.", keywords:["فيديو","شورت","ريلز","محتوى","هاشتاج","shorts","reels","video"] }
+  { id:"shorts-content", label:"محتوى الشورتز", description:"قالب لتخطيط أفكار الفيديوهات القصيرة والنصوص.", keywords:["فيديو","شورت","ريلز","محتوى","هاشتاج","shorts","reels","video"] },\n  { id:"source-catalog", label:"كتالوج الأدوات والمصادر", description:"بحث في مستودعات وأدوات تقنية مع مراجعة أولية للتراخيص.", keywords:["مصادر","مستودع","مستودعات","ترخيص","تراخيص","أدوات مجانية","كتالوج","github","repository","license","catalog"] }
 ];
 export function analyzeRequest(input) {
   const normalized = String(input ?? "").trim().toLocaleLowerCase("ar");
