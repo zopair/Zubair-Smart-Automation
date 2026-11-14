@@ -18,4 +18,5 @@ const server=createServer((req,res)=>{
   if(req.method==="HEAD"){res.end();return;}
   createReadStream(target).pipe(res);
 });
-const port=Number(process.env.PORT)||4173;\nserver.listen(port,"127.0.0.1",()=>console.log(`Preview: http://127.0.0.1:${port}`));
+const port=Number(process.env.PORT)||4173;
+server.listen(port,"127.0.0.1",()=>console.log(`Preview: http://127.0.0.1:${port}`));
