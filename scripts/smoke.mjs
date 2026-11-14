@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
-import {stat} from "node:fs/promises";
+import {stat,readFile} from "node:fs/promises";
 import {setTimeout as delay} from "node:timers/promises";
 
 const port=Number(process.env.SMOKE_PORT??4174);
@@ -15,14 +15,14 @@ try{
     if(child.exitCode!==null)throw new Error(`Preview server exited early: ${diagnostics}`);
     try{response=await fetch(base);break;}catch{await delay(100);}
   }
-  await stat("dist/.nojekyll");
+  await stat("dist/.nojekyll");\n  const clientBundle=await readFile("dist/src/main.js","utf8");assert.doesNotMatch(clientBundle,/AI_API_KEY|Bearer\\s/);
   assert.ok(response,"Preview server did not become ready.");
   assert.equal(response.status,200);
   assert.match(response.headers.get("content-type")??"",/text\/html/);
   const html=await response.text();
   assert.match(html,/Zubair Smart Automation/);
   for(const path of ["/src/main.js","/src/styles.css"]){const asset=await fetch(base+path);assert.equal(asset.status,200,`Expected ${path} to load`);assert.ok((await asset.text()).length>0);}
-  const health=await fetch(base+"/api/health");assert.equal(health.status,200);assert.equal((await health.json()).available,false);
+  const health=await fetch(base+"/api/health");assert.equal(health.status,200);assert.equal((await health.json()).available,false);\n  const ai=await fetch(base+"/api/generate",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({task:"shorts-script",payload:{}})});assert.equal(ai.status,503);
   const head=await fetch(base,{method:"HEAD"});assert.equal(head.status,200);assert.equal(await head.text(),"");
   const post=await fetch(base,{method:"POST"});assert.equal(post.status,405);
   const missing=await fetch(base+"/not-found.js");assert.equal(missing.status,404);
