@@ -8,7 +8,7 @@ test("exports direct license links for every catalog entry",()=>{const html=buil
 test("declares every generated DOM node before using it",()=>{const html=buildSourceCatalogHtml();assert.match(html,/evidence=document\.createElement\("small"\)/);});
 
 test("executes catalog rendering and filters against a minimal DOM",()=>{
- const html=buildSourceCatalogHtml(),source=html.match(/<script>([\\s\\S]*?)<\\/script>/i)?.[1];
+ const html=buildSourceCatalogHtml(),source=html.slice(html.indexOf("<script>")+8,html.indexOf("</script>"));
  assert.ok(source);
  const listeners=new Map();
  class Element{constructor(){this.children=[];this.value="all";this.textContent="";}append(...items){this.children.push(...items);}replaceChildren(...items){this.children=[...items];}addEventListener(type,handler){listeners.set(this,type+":"+handler);this.handlers??={};this.handlers[type]=handler;}}
