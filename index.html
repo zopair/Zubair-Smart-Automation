@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101014">
+  <meta name="description" content="حوّل أفكارك إلى أدوات أتمتة عملية تعمل مباشرة في متصفحك.">
+  <title>Zubair Smart Automation</title>
+  <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/"><span class="brand-mark">Z</span><span><strong>ZUBAIR</strong><small>SMART AUTOMATION</small></span></a>
+  <span class="local-status"><i></i> تشغيل محلي</span>
+</header>
+<main class="layout">
+  <section class="hero"><p class="eyebrow">منصة الأدوات الذكية</p><h1>فكرتك تتحول إلى <span>أداة تعمل.</span></h1><p class="intro">اكتب ما تحتاجه بلغة بسيطة. سنحدد نوع الأداة ونجهز لك نقطة بداية قابلة للتشغيل محلياً.</p></section>
+  <section class="generator panel" aria-labelledby="generator-title">
+    <div class="section-heading"><div><p class="eyebrow">مُنشئ الأدوات</p><h2 id="generator-title">ماذا تريد أن تنشئ؟</h2></div><span class="step">01 / وصف الفكرة</span></div>
+    <label class="sr-only" for="request">وصف الأداة المطلوبة</label>
+    <textarea id="request" rows="4" maxlength="1200" placeholder="مثال: أريد أداة لتنظيم مهام فريقي وتحديد المسؤول والموعد النهائي وحالة كل مهمة..."></textarea>
+    <div class="form-footer"><span id="char-count">0 / 1200</span><button id="analyze-button" class="primary-button" type="button">حلّل وأنشئ نقطة البداية <span aria-hidden="true">←</span></button></div>
+    <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+  </section>
+  <section id="result" class="panel result-panel" hidden aria-live="polite">
+    <div class="section-heading"><div><p class="eyebrow">نتيجة التحليل</p><h2 id="result-title">قالب مقترح</h2></div><span class="step">02 / اختيار القالب</span></div>
+    <p id="result-description"></p><div id="tool-workspace"></div>
+  </section>
+  <section class="capabilities"><div class="section-heading"><div><p class="eyebrow">مسارات المنصة</p><h2>ما الذي سنبنيه؟</h2></div></div>
+    <div class="capability-grid">
+      <article class="capability-card"><span>01</span><h3>إدارة الأعمال</h3><p>مهام ومشروعات ولوحات متابعة محلية.</p></article>
+      <article class="capability-card"><span>02</span><h3>المتاجر المصغرة</h3><p>كتالوج منتجات وسلة وطلبات واتساب.</p></article>
+      <article class="capability-card"><span>03</span><h3>محتوى السوشيال</h3><p>أفكار ونصوص وقوالب للشورتز.</p></article>
+      <article class="capability-card"><span>04</span><h3>الوكلاء الذكيون</h3><p>مهام محددة وتكاملات بصلاحيات واضحة.</p></article>
+    </div>
+  </section>
+</main>
+<footer>© Zubair Smart Automation <span>Client-Side First · Privacy by Design</span></footer>
+<script type="module" src="/src/main.js"></script>
+</body></html>
