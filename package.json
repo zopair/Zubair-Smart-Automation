@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "node --test",
-    "check": "node --check src/main.js && node --check src/core/request-analyzer.js && node --check src/core/tool-registry.js && node --check src/tools/task-manager.js && node --check scripts/build.mjs && node --check scripts/preview.mjs && node --check scripts/static-path.js",
+    "check": "node --check src/main.js && node --check src/core/request-analyzer.js && node --check src/core/tool-registry.js && node --check src/tools/task-manager.js && node --check src/core/task-store.js && node --check scripts/build.mjs && node --check scripts/preview.mjs && node --check scripts/static-path.js",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/preview.mjs"
   }
