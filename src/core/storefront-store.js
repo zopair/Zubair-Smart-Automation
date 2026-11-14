@@ -3,6 +3,7 @@ function browserStorage(){try{return globalThis.localStorage;}catch{return null;
 function cleanText(value,max,label){const text=String(value??"").trim();if(!text)throw new TypeError(`${label} is required.`);if(text.length>max)throw new RangeError(`${label} is too long.`);return text;}
 function validMoney(value){if(!Number.isSafeInteger(value)||value<0)throw new RangeError("Product price must be a non-negative integer in minor currency units.");return value;}
 function validQuantity(value){if(!Number.isSafeInteger(value)||value<1)throw new RangeError("Quantity must be a positive integer.");return value;}
+function validStock(value){if(!Number.isSafeInteger(value)||value<0)throw new RangeError("Stock must be a non-negative integer.");return value;}
 export function createStorefrontStore({storage=browserStorage(),key=DEFAULT_KEY,idFactory=()=>globalThis.crypto.randomUUID(),now=()=>new Date().toISOString()}={}){
   if(!storage||typeof storage.getItem!=="function"||typeof storage.setItem!=="function")throw new TypeError("A Storage-compatible object is required.");
   function read(){try{const value=JSON.parse(storage.getItem(key)??"{}");return {products:Array.isArray(value.products)?value.products.filter(p=>p&&typeof p.id==="string"&&typeof p.name==="string"&&Number.isSafeInteger(p.price)&&Number.isSafeInteger(p.stock)):[],cart:Array.isArray(value.cart)?value.cart.filter(i=>i&&typeof i.productId==="string"&&Number.isSafeInteger(i.quantity)&&i.quantity>0):[],orders:Array.isArray(value.orders)?value.orders.filter(o=>o&&typeof o.id==="string"):[]};}catch{return {products:[],cart:[],orders:[]};}}
@@ -12,7 +13,7 @@ export function createStorefrontStore({storage=browserStorage(),key=DEFAULT_KEY,
   return Object.freeze({
     listProducts(){return snapshot(read().products);},
     addProduct(input={}){
-      const state=read(),id=cleanText(input.id??idFactory(),80,"Product id"),name=cleanText(input.name,120,"Product name"),description=String(input.description??"").trim().slice(0,1000),price=validMoney(input.price),stock=validQuantity(input.stock);
+      const state=read(),id=cleanText(input.id??idFactory(),80,"Product id"),name=cleanText(input.name,120,"Product name"),description=String(input.description??"").trim().slice(0,1000),price=validMoney(input.price),stock=validStock(input.stock);
       if(state.products.some(p=>p.id===id))throw new Error("Product id already exists.");
       const product={id,name,description,price,stock};state.products.push(product);write(state);return snapshot(product);
     },
@@ -22,7 +23,7 @@ export function createStorefrontStore({storage=browserStorage(),key=DEFAULT_KEY,
       if(patch.name!==undefined)next.name=cleanText(patch.name,120,"Product name");
       if(patch.description!==undefined)next.description=String(patch.description).trim().slice(0,1000);
       if(patch.price!==undefined)next.price=validMoney(patch.price);
-      if(patch.stock!==undefined)next.stock=validQuantity(patch.stock);
+      if(patch.stock!==undefined)next.stock=validStock(patch.stock);
       const reserved=state.cart.find(i=>i.productId===id)?.quantity??0;if(next.stock<reserved)throw new RangeError("Stock cannot be lower than the quantity already in cart.");
       state.products[index]=next;write(state);return snapshot(next);
     },
