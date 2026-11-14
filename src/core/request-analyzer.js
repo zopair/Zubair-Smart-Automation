@@ -1,0 +1,14 @@
+const INTENTS = [
+  { id:"task-manager", label:"إدارة المهام", description:"قالب محلي لإضافة المهام ومتابعتها وتخزينها على هذا الجهاز.", keywords:["مهمة","مهام","فريق","مشروع","متابعة","task","project","team"] },
+  { id:"mini-store", label:"متجر مصغر", description:"قالب متجر لعرض المنتجات وتجهيز الطلبات.", keywords:["متجر","منتج","منتجات","سلة","بيع","store","product","cart"] },
+  { id:"shorts-content", label:"محتوى الشورتز", description:"قالب لتخطيط أفكار الفيديوهات القصيرة والنصوص.", keywords:["فيديو","شورت","ريلز","محتوى","هاشتاج","shorts","reels","video"] }
+];
+export function analyzeRequest(input) {
+  const normalized = String(input ?? "").trim().toLocaleLowerCase("ar");
+  if (!normalized) return { intent:"unknown", confidence:0, label:"وصف مطلوب", description:"اكتب وصفاً مختصراً للأداة التي تريدها." };
+  const ranked = INTENTS.map(item => ({...item,score:item.keywords.reduce((n,word)=>n+(normalized.includes(word)?1:0),0)})).sort((a,b)=>b.score-a.score);
+  const best = ranked[0];
+  if (!best || best.score===0) return {intent:"unknown",confidence:0,label:"نحتاج توضيحاً",description:"لم يتحدد قالب مناسب بعد. وضّح النتيجة التي تريد أن تحققها الأداة."};
+  const total=ranked.reduce((sum,item)=>sum+item.score,0);
+  return {intent:best.id,confidence:Number((best.score/total).toFixed(2)),label:best.label,description:best.description};
+}
