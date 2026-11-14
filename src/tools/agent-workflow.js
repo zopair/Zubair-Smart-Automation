@@ -4,7 +4,7 @@ export function mountAgentWorkflow(root){
  let engine;try{engine=createAgentWorkflowEngine({tools:[
   {id:"text.normalize",risk:"read",execute:({text=""}={})=>({normalizedText:String(text).replace(/\r\n?/g,"\n").replace(/[\t ]+/g," ").replace(/\n{3,}/g,"\n\n").trim()})},
   {id:"tasks.create",risk:"write",execute:({title}={})=>createTaskStore().create({title})}
- ]});
+ ]});}catch{const note=document.createElement("p");note.className="storage-note";note.textContent="التخزين المحلي غير متاح؛ لا يمكن تشغيل مركز سير العمل في هذا المتصفح.";root.replaceChildren(note);return;}
  const section=document.createElement("section");section.className="agent-workflow";
  const form=document.createElement("form");form.className="agent-form";
  const workflowTitle=field("اسم سير العمل","workflowTitle",120),sourceText=field("النص المراد تنظيمه","sourceText",1200,"textarea"),taskTitle=field("عنوان المهمة التي ستُنشأ بعد الموافقة","taskTitle",160);
