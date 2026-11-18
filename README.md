@@ -1,5 +1,7 @@
 # Zubair Smart Automation
 
+> **Preview:** [Local setup, demo scenario, acceptance checks, and known limits](PREVIEW.md).
+
 منصة عربية لتوليد أدوات أتمتة وأعمال صغيرة تعمل محلياً في المتصفح، مع أولوية للخصوصية.
 
 ## الترخيص
@@ -67,3 +69,9 @@ npm run preview
 5. موصل AI اختياري لمسودات الفيديو ومواصفات الأدوات — الكود متاح؛ يحتاج إعداد أسرار المزود على خادم.
 6. النشر العام — ملف GitHub Pages اليدوي جاهز؛ تفعيل Pages وتشغيل النشر لم يتم بعد.
 لا تعتبر أي ميزة مكتملة قبل اختبارها في المتصفح.
+
+## Enterprise Project Overview
+
+<video controls playsinline preload="metadata" width="100%"><source src="https://raw.githubusercontent.com/zopair/Zubair-Smart-Automation/feat/enterprise-showcase-video/assets/marketing/project-overview.mp4" type="video/mp4">Your browser does not support embedded video. [Open the MP4](https://raw.githubusercontent.com/zopair/Zubair-Smart-Automation/feat/enterprise-showcase-video/assets/marketing/project-overview.mp4).</video>
+
+[Watch the English project overview](VIDEO.md) · [Open the project repository](https://github.com/zopair/Zubair-Smart-Automation)

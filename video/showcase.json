@@ -1,0 +1,36 @@
+{
+  "name": "Zubair Smart Automation",
+  "tag": "Local-First Business Automation",
+  "url": "https://github.com/zopair/Zubair-Smart-Automation",
+  "accent": [
+    255,
+    111,
+    160
+  ],
+  "scenes": [
+    {
+      "title": "The small-business gap",
+      "narration": "Many teams need focused tools for tasks, stores, content planning, and repeatable workflows, but full-scale software can be expensive or unnecessarily complex."
+    },
+    {
+      "title": "A local-first tool workshop",
+      "narration": "Zubair Smart Automation is an Arabic-oriented MVP that turns structured requests into small business utilities designed to run locally in the browser, with right-to-left interface support."
+    },
+    {
+      "title": "Practical tools, not just promises",
+      "narration": "The current foundation includes a task manager, a mini storefront for products and orders, a short-video planner, a technical source catalog, and a workflow builder with explicit approval steps."
+    },
+    {
+      "title": "Privacy and control",
+      "narration": "The browser-first approach keeps core interactions local. External AI is optional and routed through a separately configured server-side connector; API secrets are not placed in frontend code."
+    },
+    {
+      "title": "Business value",
+      "narration": "For small businesses and operations teams, the concept offers a faster way to assemble focused workflows, test digital processes, and export supported tools as standalone HTML experiences without mandatory external runtime services."
+    },
+    {
+      "title": "MVP with a defined next step",
+      "narration": "This is an evolving MVP, not a finished enterprise suite. Broader source auditing, production deployment validation, and advanced agent integrations remain open. Review the current capabilities and roadmap on GitHub."
+    }
+  ]
+}
