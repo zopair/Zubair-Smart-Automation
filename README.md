@@ -1,5 +1,7 @@
 # Zubair Smart Automation
 
+> **Preview:** [Local setup, demo scenario, acceptance checks, and known limits](PREVIEW.md).
+
 منصة عربية لتوليد أدوات أتمتة وأعمال صغيرة تعمل محلياً في المتصفح، مع أولوية للخصوصية.
 
 ## الترخيص
